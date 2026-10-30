@@ -2,24 +2,23 @@
    CONFIGURAÇÃO — edite apenas este bloco
    ================================================================ */
 
-// Link do checkout. TODOS os botões da página apontam para cá.
-window.CHECKOUT_URL = "#";
+// Link do checkout (botão "SIM, QUERO ACESSAR AGORA" da oferta).
+// Os demais botões levam até a seção da oferta (#oferta).
+window.CHECKOUT_URL = "https://pay.wiapy.com/_IZ1PImjYNET";
+
+// Link do checkout com desconto (R$ 14,90) do popup de saída.
+window.POPUP_URL = "https://pay.wiapy.com/2w7t-DqYFxj";
 
 // Imagens finais (mockups, páginas internas e selo).
 // Deixe "" para manter o placeholder desenhado em CSS.
 // Ex.: hero: "assets/mockup-principal.webp"
 window.IMAGES = {
   // hero: imagem definida direto no index.html (assets/hero_1.webp)
-  bonus1:    "", // Dobra 6 — Guia Visual de Diagnóstico Diferencial (4:3)
-  bonus2:    "", // Dobra 6 — Checklist de Anamnese e Exame Mental (4:3)
-  bonus3:    "", // Dobra 6 — Guia Visual de Psicofármacos (4:3)
-  bonus4:    "", // Dobra 6 — 50 Casos Clínicos Comentados (4:3)
-  bonus5:    "", // Dobra 6 — Revisão Expressa de Saúde Mental (4:3)
   seal:      ""  // Dobra 8 — selo de garantia de 7 dias (1:1)
 };
 
 (function(){
-// Todos os CTAs → CHECKOUT_URL
+// Botão da oferta → CHECKOUT_URL
 var url = window.CHECKOUT_URL || "#";
 document.querySelectorAll("[data-checkout]").forEach(function(a){ a.href = url; });
 
@@ -45,4 +44,52 @@ document.querySelectorAll(".faq-btn").forEach(function(btn){
     btn.closest(".faq-item").classList.toggle("open", !open);
   });
 });
+
+// Popup de saída: aparece uma vez por sessão
+// Desktop: mouse sai pelo topo da janela. Celular: rolagem rápida para cima após ler parte da página.
+var pop = document.getElementById("exit-popup");
+if (pop && typeof pop.showModal === "function") {
+  if (window.POPUP_URL) pop.querySelector("[data-popup-checkout]").href = window.POPUP_URL;
+
+  var KEY = "exitPopupShown";
+  var shown = false;
+  try { shown = sessionStorage.getItem(KEY) === "1"; } catch (e) {}
+  var armed = false;
+  setTimeout(function(){ armed = true; }, 5000);
+
+  function showPopup(){
+    if (shown || !armed || pop.open) return;
+    shown = true;
+    try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
+    pop.showModal();
+    pop.focus();
+  }
+
+  // Quem já clicou para comprar não vê o popup
+  document.querySelectorAll("[data-checkout]").forEach(function(a){
+    a.addEventListener("click", function(){ shown = true; });
+  });
+
+  document.addEventListener("mouseout", function(e){
+    if (!e.relatedTarget && e.clientY <= 0) showPopup();
+  });
+
+  var lastY = window.scrollY, lastT = Date.now();
+  window.addEventListener("scroll", function(){
+    var y = window.scrollY, t = Date.now();
+    var speed = (lastY - y) / Math.max(t - lastT, 1);
+    var depth = y / Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    if (window.matchMedia("(pointer:coarse)").matches && speed > 2.5 && depth > 0.3) showPopup();
+    lastY = y; lastT = t;
+  }, { passive: true });
+
+  pop.querySelectorAll("[data-exit-close]").forEach(function(b){
+    b.addEventListener("click", function(){ pop.close(); });
+  });
+  // Clique fora da caixa (no fundo escuro) fecha
+  pop.addEventListener("click", function(e){
+    var r = pop.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) pop.close();
+  });
+}
 })();
