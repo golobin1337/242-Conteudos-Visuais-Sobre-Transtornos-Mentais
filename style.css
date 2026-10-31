@@ -319,18 +319,6 @@ svg.i{width:1em;height:1em;flex:none;stroke:currentColor;fill:none;stroke-width:
 .offer-img{margin:24px auto 20px;width:min(300px,78%)}
 .offer-img img{width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow-md)}
 
-/* Dobra 2: galeria com as páginas internas reais */
-.gallery{margin:40px calc(var(--gutter) * -1) 0;padding:6px var(--gutter) 18px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);scrollbar-width:thin}
-.gallery:focus-visible{outline:3px solid var(--emerald);outline-offset:2px;border-radius:12px}
-.gallery .page{flex:0 0 72%;max-width:300px;margin:0;scroll-snap-align:start}
-.gallery .page img{width:100%;height:auto;aspect-ratio:528/746;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);background:#fff}
-@media (min-width:640px){.gallery .page{flex-basis:40%}}
-@media (min-width:960px){
-  .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;overflow:visible;margin-inline:0;padding:0}
-  .gallery .page{max-width:none}
-  .gallery .page img{transition:transform .2s,box-shadow .2s}
-  .gallery .page img:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
-}
 
 /* Popup de saída */
 .exit{width:min(440px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;padding:36px 28px 24px;border:0;border-radius:22px;background:#fff;color:var(--text);text-align:center;box-shadow:0 30px 80px -20px rgba(14,42,57,.5)}
@@ -353,3 +341,15 @@ svg.i{width:1em;height:1em;flex:none;stroke:currentColor;fill:none;stroke-width:
 .exit-x:focus-visible,.exit-no:focus-visible{outline:3px solid var(--emerald);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.exit[open]{animation:none}}
 .exit:focus{outline:none}
+
+/* Dobra 2: carrossel infinito com as páginas internas */
+.gallery{margin-top:40px;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;padding-block:8px 20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.gallery-track{display:flex;width:max-content;animation:gallery-scroll 45s linear infinite}
+.gallery:hover .gallery-track,.gallery:focus-within .gallery-track{animation-play-state:paused}
+.gallery .page{flex:none;width:clamp(200px,58vw,280px);margin:0;padding-right:18px}
+.gallery .page img{width:100%;height:auto;aspect-ratio:528/746;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);background:#fff}
+@keyframes gallery-scroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .gallery{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .gallery-track{animation:none;padding-inline:var(--gutter)}
+}

@@ -36,6 +36,17 @@ document.querySelectorAll("[data-slot]").forEach(function(fig){
   fig.classList.add("has-img");
 });
 
+// Carrossel infinito: duplica as páginas para o loop não ter emenda
+var track = document.querySelector(".gallery-track");
+if (track) {
+  Array.prototype.slice.call(track.children).forEach(function(fig){
+    var clone = fig.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    clone.querySelector("img").alt = "";
+    track.appendChild(clone);
+  });
+}
+
 // FAQ accordion
 document.querySelectorAll(".faq-btn").forEach(function(btn){
   btn.addEventListener("click", function(){
