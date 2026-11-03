@@ -346,7 +346,7 @@ svg.i{width:1em;height:1em;flex:none;stroke:currentColor;fill:none;stroke-width:
 .gallery{margin-top:40px;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;padding-block:8px 20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .gallery-track{display:flex;width:max-content;animation:gallery-scroll 45s linear infinite}
 .gallery:hover .gallery-track,.gallery:focus-within .gallery-track{animation-play-state:paused}
-.gallery .page{flex:none;width:clamp(200px,58vw,280px);margin:0;padding-right:18px}
+.gallery .page{flex:none;width:clamp(230px,68vw,320px);margin:0;padding-right:18px}
 .gallery .page img{width:100%;height:auto;aspect-ratio:528/746;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);background:#fff}
 @keyframes gallery-scroll{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){
