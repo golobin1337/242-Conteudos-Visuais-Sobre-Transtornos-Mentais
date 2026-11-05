@@ -4,10 +4,11 @@
 
 // Link do checkout (botão "SIM, QUERO ACESSAR AGORA" da oferta).
 // Os demais botões levam até a seção da oferta (#oferta).
-window.CHECKOUT_URL = "https://pay.wiapy.com/_IZ1PImjYNET";
+// Uma página pode definir os próprios links antes de carregar este arquivo (ex.: index-b.html).
+if (window.CHECKOUT_URL === undefined) window.CHECKOUT_URL = "https://pay.wiapy.com/_IZ1PImjYNET";
 
-// Link do checkout com desconto (R$ 14,90) do popup de saída.
-window.POPUP_URL = "https://pay.wiapy.com/2w7t-DqYFxj";
+// Link do checkout com desconto (R$ 14,90) do popup de saída. Vazio ("") desliga o popup.
+if (window.POPUP_URL === undefined) window.POPUP_URL = "https://pay.wiapy.com/2w7t-DqYFxj";
 
 // Imagens finais (mockups, páginas internas e selo).
 // Deixe "" para manter o placeholder desenhado em CSS.
@@ -59,8 +60,8 @@ document.querySelectorAll(".faq-btn").forEach(function(btn){
 // Popup de saída: aparece uma vez por sessão
 // Desktop: mouse sai pelo topo da janela. Celular: rolagem rápida para cima após ler parte da página.
 var pop = document.getElementById("exit-popup");
-if (pop && typeof pop.showModal === "function") {
-  if (window.POPUP_URL) pop.querySelector("[data-popup-checkout]").href = window.POPUP_URL;
+if (pop && window.POPUP_URL && typeof pop.showModal === "function") {
+  pop.querySelector("[data-popup-checkout]").href = window.POPUP_URL;
 
   var KEY = "exitPopupShown";
   var shown = false;
